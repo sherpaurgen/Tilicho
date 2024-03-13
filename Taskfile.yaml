@@ -1,0 +1,18 @@
+#Task(written in go) is a task runner / build tool that aims to be simpler and easier to use. we define task in Taskfile.yml
+version: '3'
+tasks:
+  build:
+    cmds:
+      - go build -o app cmd/server/main.go
+
+  test:
+    cmds:
+      - go test -v ./...
+
+  list:
+    cmds:
+      - golangci-list run
+
+  run:
+    cmds:
+      - docker-compose up --build
