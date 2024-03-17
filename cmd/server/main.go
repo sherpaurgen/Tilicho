@@ -25,6 +25,11 @@ func Run() error {
 		log.Printf("failed to ping database: %v", err)
 		return err
 	}
+	err = db.Migratedb()
+	if err != nil {
+		err = fmt.Errorf("migratedb failed: %w", err)
+		fmt.Println(err)
+	}
 	fmt.Println("database connection [ok]")
 	return nil
 }

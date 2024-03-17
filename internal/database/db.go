@@ -9,14 +9,17 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// pgx pgxpool is used https://github.com/jackc/pgx here because the lib pq is in archive mode and recommends new projject to use pgx
+// pgx pgxpool is used https://github.com/jackc/pgx here because the lib pq is in archive mode and recommends new projects to use pgx
 type Database struct {
-	Pool *pgxpool.Pool
+	Pool             *pgxpool.Pool
+	ConnectionString string
 }
 
 func NewDatabase() (*Database, error) {
+	// urlExample := "postgres://username:password@localhost:5432/database_name"
+	//"postgres://postgres:changeme567@db:5432/postgres?sslmode=disable"
 	connectionString := fmt.Sprintf(
-		"postgres://user=%s password=%s host=%s port=%s dbname=%s sslmode=%s",
+		"postgres://%s:%s@%s:%s/%s?sslmode=%s",
 		os.Getenv("DB_USERNAME"),
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_HOST"),
@@ -30,7 +33,7 @@ func NewDatabase() (*Database, error) {
 		return nil, fmt.Errorf("unable to connect to database: %v", err)
 	}
 
-	return &Database{Pool: pool}, nil
+	return &Database{Pool: pool, ConnectionString: connectionString}, nil
 }
 
 func (db *Database) Ping(ctx context.Context) error {
