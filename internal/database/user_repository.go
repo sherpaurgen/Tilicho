@@ -21,6 +21,7 @@ type UserRow struct {
 
 type UserRepository interface {
 	GetUserByUsername(username string) (*userModel.User, error)
+	CreateUser(context.Context, userModel.User) (*userModel.User, error)
 }
 
 func convertUserRowToUserStruct(u UserRow) userModel.User {
@@ -43,4 +44,17 @@ func (db *Database) GetUserByUsername(ctx context.Context, username string) (use
 		fmt.Println("GetUserByUsername: Problem in dbquery:", err)
 	}
 	return convertUserRowToUserStruct(userRow), nil
+}
+
+func (db *Database) CreateUser(ctx context.Context, userobj userModel.User) (userModel.User, error) {
+
+	//err = conn.QueryRow(context.Background(), "select name, weight from widgets where id=$1", 42).Scan(&name, &weight)
+	query := `
+	INSERT INTO users_table (username, email, password, groups, isactive)
+	VALUES ($1, $2, $3, $4, $5)`
+	err := db.Pool.QueryRow(context.Background(), query, userobj.Username, userobj.Email, userobj.Password, userobj.Groups, userobj.IsActive)
+	if err != nil {
+		fmt.Println("GetUserByUsername: Problem in dbquery:", err)
+	}
+	return userobj, nil
 }
