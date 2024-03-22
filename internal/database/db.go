@@ -1,5 +1,7 @@
 package database
 
+//repo layer
+
 import (
 	"context"
 	"fmt"
@@ -7,6 +9,8 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
+
+//This is acting as database repository that initializes datbase conneciton pool
 
 // pgx pgxpool is used https://github.com/jackc/pgx here because the lib pq is in archive mode and recommends new projects to use pgx
 type Database struct {

@@ -1,9 +1,10 @@
 package models
 
 type User struct {
-	ID       int64
+	Userid   string
 	Username string
 	Email    string
 	Password string
-	Groups   []*Group
+	Groups   string
+	IsActive string
 }

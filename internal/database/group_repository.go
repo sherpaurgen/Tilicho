@@ -1,4 +1,6 @@
-package repositories
+package database
+
+//repo layer
 
 import (
 	"database/sql"

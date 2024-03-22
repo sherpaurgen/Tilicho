@@ -6,7 +6,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/sherpaurgen/Tilicho/internal/database" //importing from internal/database pkg
+	"github.com/sherpaurgen/Tilicho/internal/auth/services"
+	"github.com/sherpaurgen/Tilicho/internal/database"
 )
 
 // run will instantiate and startup the project app
@@ -31,6 +32,9 @@ func Run() error {
 		fmt.Println(err)
 	}
 	fmt.Println("database connection [ok]")
+
+	usersvc := services.NewUserService(db)
+	fmt.Println(usersvc.GetUserByUsername(context.Background(), "mrbob"))
 	return nil
 }
 
