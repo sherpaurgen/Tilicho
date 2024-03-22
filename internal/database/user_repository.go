@@ -37,10 +37,10 @@ func (db *Database) GetUserByUsername(ctx context.Context, username string) (use
 	var userRow UserRow
 	//err = conn.QueryRow(context.Background(), "select name, weight from widgets where id=$1", 42).Scan(&name, &weight)
 
-	err := db.Pool.QueryRow(context.Background(), "SELECT id,username,email,groups,isactive FROM users_table WHERE id=$1", username).Scan(
+	err := db.Pool.QueryRow(context.Background(), "SELECT userid,username,email,groups,isactive FROM users_table WHERE username=$1", username).Scan(
 		&userRow.Userid, &userRow.Username, &userRow.Email, &userRow.Groups, &userRow.IsActive)
 	if err != nil {
-		fmt.Println("GetUserByEmail: Problem in dbquery:", err)
+		fmt.Println("GetUserByUsername: Problem in dbquery:", err)
 	}
 	return convertUserRowToUserStruct(userRow), nil
 }

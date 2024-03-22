@@ -34,7 +34,7 @@ func Run() error {
 	fmt.Println("database connection [ok]")
 
 	usersvc := services.NewUserService(db)
-	fmt.Println(usersvc.GetUserByUsername(context.Background(), "mrbob"))
+	fmt.Println(usersvc.GetUserByUsername(context.Background(), "jane_smith"))
 	return nil
 }
 
