@@ -20,7 +20,7 @@ type UserRow struct {
 }
 
 type UserRepository interface {
-	GetUserByUsername(ctx context.Context, username string) (*userModel.User, error)
+	GetUserByUsername(context.Context, string) (userModel.User, error)
 	CreateUser(context.Context, userModel.User) (userModel.User, error)
 }
 

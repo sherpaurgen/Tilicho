@@ -9,7 +9,7 @@ import (
 
 // this is repository interface Store
 type Store interface {
-	GetUserByUsername(username string) (*userModel.User, error)
+	GetUserByUsername(context.Context, string) (*userModel.User, error)
 	CreateUser(context.Context, userModel.User) (userModel.User, error)
 	// Additional methods for other user-related operations
 }
