@@ -20,8 +20,8 @@ type UserRow struct {
 }
 
 type UserRepository interface {
-	GetUserByUsername(context.Context, string) (userModel.User, error)
-	CreateUser(context.Context, userModel.User) (userModel.User, error)
+	GetUserByUsername(username string) (*userModel.User, error)
+	CreateUser(context.Context, userModel.User) (*userModel.User, error)
 }
 
 func convertUserRowToUserStruct(u UserRow) userModel.User {
