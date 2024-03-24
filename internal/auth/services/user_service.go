@@ -29,15 +29,5 @@ func (s *UserService) GetUserByUsername(ctx context.Context, username string) (u
 		fmt.Println(err)
 		return userModel.User{}, nil
 	}
-	return *usr, nil
-}
-
-func (s *UserService) CreateUser(ctx context.Context, userobj userModel.User) (userModel.User, error) {
-	fmt.Println("creating user...")
-	//err = conn.QueryRow(context.Background(), "select name, weight from widgets where id=$1", 42).Scan(&name, &weight)
-	usr, err := s.Store.CreateUser(ctx, userobj)
-	if err != nil {
-		fmt.Println("GetUserByUsername: Problem in dbquery:", err)
-	}
 	return usr, nil
 }
