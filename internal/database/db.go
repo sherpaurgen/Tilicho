@@ -5,9 +5,11 @@ package database
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/joho/godotenv"
 )
 
 //This is acting as database repository that initializes datbase conneciton pool
@@ -21,6 +23,10 @@ type Database struct {
 func NewDatabase() (*Database, error) {
 	// urlExample := "postgres://username:password@localhost:5432/database_name"
 	//"postgres://postgres:changeme567@db:5432/postgres?sslmode=disable"
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	connectionString := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=%s",
 		os.Getenv("DB_USERNAME"),

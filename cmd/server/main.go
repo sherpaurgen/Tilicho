@@ -6,9 +6,9 @@ import (
 	"log"
 	"time"
 
-	authModels "github.com/sherpaurgen/Tilicho/internal/auth/models"
 	"github.com/sherpaurgen/Tilicho/internal/auth/services"
 	"github.com/sherpaurgen/Tilicho/internal/database"
+	webHandler "github.com/sherpaurgen/Tilicho/internal/transport/httpweb"
 )
 
 // run will instantiate and startup the project app
@@ -34,17 +34,22 @@ func Run() error {
 	}
 	fmt.Println("database connection [ok]")
 
-	usersvc := services.NewUserService(db)
-	fmt.Println(usersvc.GetUserByUsername(context.Background(), "jane_smith"))
-	var v = authModels.User{
-		//Userid:   "550e8400-e29b-41d4-a716-446655440000", //his will be auto gen by postgres db
-		Username: "john_doe",
-		Email:    "john@example.com",
-		Password: "password123",
-		Groups:   "admin",
-		IsActive: "true",
+	//fmt.Println(usersvc.GetUserByUsername(context.Background(), "jane_smith"))
+
+	// var v = authModels.User{
+	// 	//Userid:   "550e8400-e29b-41d4-a716-446655440000", //his will be auto gen by postgres db
+	// 	Username: "john_doe",
+	// 	Email:    "john@example.com",
+	// 	Password: "password123",
+	// 	Groups:   "admin",
+	// 	IsActive: "true",
+	// }
+	// usersvc.CreateUser(context.Background(), v)
+	user_service := services.NewUserService(db)
+	httpHandler := webHandler.NewHandler(user_service)
+	if err := httpHandler.Serve(); err != nil {
+		return err
 	}
-	usersvc.CreateUser(context.Background(), v)
 	return nil
 }
 

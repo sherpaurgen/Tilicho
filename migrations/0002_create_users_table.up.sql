@@ -1,11 +1,18 @@
+-- Users table
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE IF NOT EXISTS users_table (
     userid UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    username varchar(255) NOT NULL,
-    email varchar(255) NOT NULL,
-    password varchar(255) NOT NULL,
-    groups varchar(255) NOT NULL,
-    isactive varchar(255) NOT NULL
-);
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    isactive BOOLEAN NOT NULL DEFAULT TRUE,
+    createdon TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modifiedon TIMESTAMP NULL
+    );
+
 
 -- INSERT INTO users_table (username, email, password, groups, isactive)
 -- VALUES

@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	userModel "github.com/sherpaurgen/Tilicho/internal/auth/models"
+	"github.com/sherpaurgen/Tilicho/internal/auth/utils"
 )
 
 type UserRow struct {
@@ -53,7 +54,13 @@ func (db *Database) CreateUser(ctx context.Context, userobj userModel.User) (str
 	INSERT INTO users_table (username, email, password, groups, isactive)
 	VALUES ($1, $2, $3, $4, $5)
 	RETURNING userid`
-	err := db.Pool.QueryRow(ctx, query, userobj.Username, userobj.Email, userobj.Password, userobj.Groups, userobj.IsActive).Scan(&userid)
+	secretHash, err := utils.CreateSecretHash(userobj.Password)
+	if err != nil {
+		fmt.Println("CreateUser: problem creating secret hash", err)
+		return "", err
+	}
+	err = db.Pool.QueryRow(ctx, query, userobj.Username, userobj.Email, secretHash, userobj.Groups, userobj.IsActive).Scan(&userid)
+
 	if err != nil {
 		fmt.Println("CreateUser: Problem in dbquery:", err)
 	}
