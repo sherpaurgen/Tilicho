@@ -2,8 +2,11 @@ package webHandler
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -48,9 +51,17 @@ func (h *Handler) mapRoutes() {
 }
 
 func (h *Handler) Serve() error {
-	if err := h.Server.ListenAndServe(); err != nil {
-		fmt.Println("Error starting webserver:", err)
-		return err
-	}
+	go func() {
+		if err := h.Server.ListenAndServe(); err != nil {
+			log.Println(err.Error())
+		}
+	}()
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	<-c //wait until some value is sent on channel "c" , the value is discarded
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	h.Server.Shutdown(ctx)
+	log.Println("shutting down webserver")
 	return nil
 }
