@@ -24,16 +24,15 @@ type Handler struct {
 
 func NewHandler(service *services.UserService) *Handler {
 	h := &Handler{
-		Router: chi.NewRouter(),
-
+		Router:  chi.NewRouter(),
 		Service: service,
-		Server: &http.Server{
-			Addr: ":8080", // Specify the address to listen on
-		},
+	}
+	h.mapRoutes()
+	h.Server = &http.Server{
+		Addr:    ":8080",  // Specify the address to listen on
+		Handler: h.Router, // specify routes to use for this web server
 	}
 
-	h.mapRoutes()
-	h.Server.Handler = h.Router
 	return h
 }
 
